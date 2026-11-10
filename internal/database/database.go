@@ -8,18 +8,20 @@ import (
 
 type Database struct {
 	Conn *pgxpool.Pool
-	Path string
 }
 
-func Connect(ctx context.Context, connectionString string) (*pgxpool.Pool, error) {
+func Connect(ctx context.Context, connectionString string) (Database, error) {
 	connPool, err := pgxpool.New(ctx, connectionString)
 	if err != nil {
-		return nil, err
+		return Database{}, err
 	}
 
 	if err = connPool.Ping(ctx); err != nil {
-		return nil, err
+		connPool.Close()
+		return Database{}, err
 	}
 
-	return connPool, nil
+	return Database{
+		Conn: connPool,
+	}, nil
 }
