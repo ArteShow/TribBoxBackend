@@ -6,6 +6,7 @@ import (
 	"os"
 
 	"github.com/ArteShow/TribBoxBackend/internal/database"
+	"github.com/ArteShow/TribBoxBackend/internal/migrate"
 	"github.com/joho/godotenv"
 )
 
@@ -28,4 +29,9 @@ func main() {
 	defer db.Conn.Close()
 
 	log.Println("Successfully connected to the db")
+
+	if err = migrate.RunMigrations(context.Background(), &db); err != nil {
+		panic(err)
+	}
+	log.Println("Successfully executed migrations")
 }
