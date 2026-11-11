@@ -5,7 +5,7 @@ import (
 	"errors"
 )
 
-func (r *PlayerRepository) UpdatePlayersUsername(ctx context.Context, uuid, username string) error {
+func (r *PlayerRepository) UpdatePlayerUsername(ctx context.Context, uuid, username string) error {
 	sql := `UPDATE players SET username = $1 WHERE uuid = $2`
 	tag, err := r.DB.Conn.Exec(ctx, sql, username, uuid)
 	if err != nil {
