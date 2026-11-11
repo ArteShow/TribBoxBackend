@@ -5,7 +5,7 @@ import (
 )
 
 func (r *PlayerRepository) GetAll(ctx context.Context) ([]Player, error) {
-	query := `SELECT uuid, username, last_seen, created_at FROM players`
+	query := `SELECT uuid, username, last_seen, created_at FROM players ORDER BY created_at ASC`
 	rows, err := r.DB.Conn.Query(ctx, query)
 	if err != nil {
 		return nil, err
@@ -34,7 +34,7 @@ func (r *PlayerRepository) GetAll(ctx context.Context) ([]Player, error) {
 	return players, nil
 }
 
-func (r *PlayerRepository) GetByID(ctx context.Context, uuid string) (Player, error) {
+func (r *PlayerRepository) GetByUUID(ctx context.Context, uuid string) (Player, error) {
 	query := `SELECT uuid, username, last_seen, created_at FROM players WHERE uuid = $1`
 	row := r.DB.Conn.QueryRow(ctx, query, uuid)
 

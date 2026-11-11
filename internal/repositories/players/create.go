@@ -4,8 +4,8 @@ import "context"
 
 func (r *PlayerRepository) CreatePlayer(ctx context.Context, uuid, username string) error {
 	sql := `INSERT INTO players
-			VALUES (uuid, username)
-			ON CONFLICT (name) DO NOTHING;`
+			VALUES ($1, $2)
+			ON CONFLICT (username) DO NOTHING;`
 
 	_, err := r.DB.Conn.Exec(ctx, sql, uuid, username)
 	return err
